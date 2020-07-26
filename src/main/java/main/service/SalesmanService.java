@@ -2,6 +2,7 @@ package main.service;
 
 import main.entity.Salesman;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SalesmanService {
@@ -14,5 +15,15 @@ public class SalesmanService {
             }
         }
         return salesman;
+    }
+
+    public List<Salesman> getAllSalesman(List<Object> allDataInFile) {
+        List<Salesman> salesmen = new ArrayList<>();
+        for (int i =0; i < allDataInFile.size(); i++) {
+            if (allDataInFile.get(i) instanceof Salesman) {
+                salesmen.add((Salesman) allDataInFile.get(i));
+            }
+        }
+        return salesmen;
     }
 }
