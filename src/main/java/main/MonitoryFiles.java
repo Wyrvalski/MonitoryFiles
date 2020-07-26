@@ -2,6 +2,8 @@ package main;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MonitoryFiles {
     public static void main(String[] args){
@@ -11,11 +13,14 @@ public class MonitoryFiles {
 
         while (true) {
             try(WatchService watchService = FileSystems.getDefault().newWatchService()){
+                List<Object> textFile = new ArrayList<>();
                 inDirectory.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
                 WatchKey key = watchService.take();
                 Thread.sleep(1000);
                 for (WatchEvent<?> event : key.pollEvents()) {
                     String filename = event.context().toString();
+                    List<String> lines = Files.readAllLines(inDirectory.resolve((Path) event.context()));
+                    System.out.println(lines);
                 }
 
             } catch (IOException ex) {
