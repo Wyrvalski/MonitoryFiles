@@ -9,6 +9,10 @@ public class Salesman {
     private String cpf;
     private BigDecimal salary;
 
+    public Salesman() {
+
+    }
+
     public Salesman(Integer gorupId, String name, String cpf, BigDecimal salary) {
         this.gorupId = gorupId;
         this.name = name;

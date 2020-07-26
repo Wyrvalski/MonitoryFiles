@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="testReadFilesServices" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-07-26T20:24:59" hostname="eduardo-G3-3590" time="0.006">
+  <properties/>
+  <testcase name="testConvertLineToObjectSalesman" classname="testReadFilesServices" time="0.005"/>
+  <testcase name="testConvertLineToObjectSale" classname="testReadFilesServices" time="0.0"/>
+  <testcase name="testConvertLineToObjectClient" classname="testReadFilesServices" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
