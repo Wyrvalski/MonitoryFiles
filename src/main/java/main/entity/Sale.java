@@ -48,6 +48,6 @@ public class Sale {
         this.salesman = salesman;
     }
     public String toString() {
-        return "Sale(id=" + this.getId() + ", items=" + this.getItems().get(0) + ", vendedor=" + this.getSalesman().getName() + ")";
+        return "Sale(id=" + this.getId() + ", items=" + this.getItems() + ", vendedor=" + this.getSalesman().getName() + ")";
     }
 }

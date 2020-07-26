@@ -1,4 +1,6 @@
 package main;
+import main.service.ReadFilesServices;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
@@ -13,14 +15,13 @@ public class MonitoryFiles {
 
         while (true) {
             try(WatchService watchService = FileSystems.getDefault().newWatchService()){
-                List<Object> textFile = new ArrayList<>();
+                ReadFilesServices readFilesServices = new ReadFilesServices();
                 inDirectory.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
                 WatchKey key = watchService.take();
                 Thread.sleep(1000);
                 for (WatchEvent<?> event : key.pollEvents()) {
-                    String filename = event.context().toString();
-                    List<String> lines = Files.readAllLines(inDirectory.resolve((Path) event.context()));
-                    System.out.println(lines);
+                    List<Object> textFile = readFilesServices.readEachFile(inDirectory,event);
+                    System.out.println(textFile);
                 }
 
             } catch (IOException ex) {
