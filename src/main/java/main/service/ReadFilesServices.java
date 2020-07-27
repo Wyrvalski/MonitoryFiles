@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.WatchEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ReadFilesServices {
     SaleService saleService = new SaleService();
@@ -22,18 +22,18 @@ public class ReadFilesServices {
     List<Object> allDataInFile = new ArrayList<>();
     Logger logger = LoggerFactory.getLogger(ReadFilesServices.class);
 
-    public List<Object> readEachFile(Path inDirectory, WatchEvent<?> event) {
+    public List<String> readEachFile(Path inDirectory, String event) {
         try {
-            List<String> lines = Files.readAllLines(inDirectory.resolve((Path) event.context()),ISO_8859_1);
-            return mountObjects(lines);
+            List<String> lines = Files.readAllLines(inDirectory.resolve(event),ISO_8859_1);
+            return lines;
         } catch (IOException ex) {
             this.logger.error(ex.getMessage());
             throw new RuntimeException(ex.getMessage());
         }
     }
 
-    public List<Object> mountObjects(List<String> lines) {
-
+    public List<Object> mountObjects(Path inDirectory, String event) {
+        List<String> lines = readEachFile(inDirectory,event);
         for (String line : lines) {
             String id = line.substring(0, 3);
             String[] parte = line.split("ç");

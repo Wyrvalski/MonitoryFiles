@@ -1,5 +1,6 @@
 package service;
 
+import main.MonitoryFiles;
 import main.entity.Item;
 import main.entity.Sale;
 import main.service.ReadFilesServices;
@@ -8,14 +9,22 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public class testSaleServices {
     private List<String> lines = new ArrayList<>();
     private List<Item> items = new ArrayList<>();
+    Path inDirectory = MonitoryFiles.createPath("in");
+    File file = new File(inDirectory + File.separator + "arquivoTeste.dat");
 
     @Before
     public void setup(){
@@ -29,6 +38,16 @@ public class testSaleServices {
         items.add(item1);
         items.add(item2);
         items.add(item3);
+        try {
+            file.createNewFile();
+            BufferedWriter writer = Files.newBufferedWriter(inDirectory.resolve(file.toString()),ISO_8859_1);
+            for (int i = 0; i < lines.size(); i++) {
+                writer.write(lines.get(i) + '\n');
+            }
+            writer.close();
+        } catch (IOException ex) {
+
+        }
     }
 
     @Test
@@ -42,7 +61,7 @@ public class testSaleServices {
     public void testGetAllSalesInObject() {
         ReadFilesServices readFilesServices = new ReadFilesServices();
         SaleService saleService = new SaleService();
-        List<Object> allDataInFile = readFilesServices.mountObjects(lines);
+        List<Object> allDataInFile = readFilesServices.mountObjects(inDirectory,file.toString());
         List<Sale> sales = saleService.getAllSale(allDataInFile);
         Assert.assertEquals(sales.size(), 2);
 
