@@ -17,7 +17,7 @@ public class SalesmanService {
         return salesman;
     }
 
-    public List<Salesman> getAllSalesman(List<Object> allDataInFile) {
+    public static List<Salesman> getAllSalesman(List<Object> allDataInFile) {
         List<Salesman> salesmen = new ArrayList<>();
         for (int i =0; i < allDataInFile.size(); i++) {
             if (allDataInFile.get(i) instanceof Salesman) {

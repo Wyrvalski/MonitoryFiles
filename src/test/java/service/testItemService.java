@@ -12,8 +12,7 @@ public class testItemService {
 
     @Test
     public void testGetAllItemsInLine(){
-        ItemService itemService = new ItemService();
-        String items = itemService.getItemsInLine(sale);
+        String items = ItemService.getItemsInLine(sale);
         Assert.assertEquals(items,"1-34-10,2-33-1.50,3-40-0.10");
     }
 

@@ -71,7 +71,5 @@ public class testReadFilesServices {
     public void testReadEachLineAndConvertToObject() {
         ReadFilesServices readFilesServices = new ReadFilesServices();
         List<String> allDataInFile = readFilesServices.readEachFile(inDirectory,file.toString());
-        System.out.println(allDataInFile);
-
     }
 }

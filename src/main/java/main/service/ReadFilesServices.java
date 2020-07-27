@@ -34,6 +34,7 @@ public class ReadFilesServices {
 
     public List<Object> mountObjects(Path inDirectory, String event) {
         List<String> lines = readEachFile(inDirectory,event);
+
         for (String line : lines) {
             String id = line.substring(0, 3);
             String[] parte = line.split("ç");

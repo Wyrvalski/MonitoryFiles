@@ -13,20 +13,29 @@ import java.nio.file.WatchEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class WriteFilesService {
-    List<Client> clients = new ArrayList<>();
+    ClientService clientService = new ClientService();
     List<Item> items = new ArrayList<>();
-    List<Sale> sales = new ArrayList<>();
-    List<Salesman> salesmen = new ArrayList<>();
+    SaleService saleService = new SaleService();
+    SalesmanService salesmanService = new SalesmanService();
 
     public void writeOnFile (Path outDirectory, WatchEvent<?> event, List<Object> textFile) {
-        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(event.context().toString().replace(".dat", ".done.dat")))) {
-            SalesmanService salesmanService = new SalesmanService();
-            this.salesmen = salesmanService.getAllSalesman(textFile);
-            writer.write("Teste");
+        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(event.context().toString().replace(".dat", ".done.dat")),ISO_8859_1)) {
+            writer.write(mountOutPutFile(textFile));
         } catch (IOException ex) {
 
         }
+    }
+
+    public String mountOutPutFile(List<Object> allDataInFile) {
+        List<Salesman> salesmen = salesmanService.getAllSalesman(allDataInFile);
+        List<Client> clients = clientService.getAllClient(allDataInFile);
+        Salesman salesman = saleService.getWorstSalesman(allDataInFile);
+        String id = saleService.getBiggerSale(allDataInFile).getId();
+        return String.format("%oç%oç%sç%s",clients.size(),salesmen.size(),id,salesman.getName());
     }
 
 }
