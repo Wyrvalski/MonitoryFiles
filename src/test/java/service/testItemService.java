@@ -1,3 +1,5 @@
+package service;
+
 import main.entity.Item;
 import main.service.ItemService;
 import main.service.SaleService;

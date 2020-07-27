@@ -1,3 +1,5 @@
+package service;
+
 import main.entity.Client;
 import main.entity.Sale;
 import main.entity.Salesman;
@@ -38,5 +40,10 @@ public class testReadFilesServices {
         ReadFilesServices readFilesServices = new ReadFilesServices();
         List<Object> allDataInFile = readFilesServices.mountObjects(lines);
         Assert.assertEquals(Sale.class,allDataInFile.get(2).getClass());
+    }
+
+    @Test
+    public void testReadEachLineAndConvertToObject() {
+
     }
 }
