@@ -1,8 +1,10 @@
 package main;
+import main.service.WriteFilesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import main.service.ReadFilesServices;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
@@ -12,9 +14,9 @@ import java.util.List;
 public class MonitoryFiles {
     public static void main(String[] args){
         Logger logger = LoggerFactory.getLogger(MonitoryFiles.class);
+        WriteFilesService writeFilesService = new WriteFilesService();
         Path inDirectory = createPath("in");
         Path outDirectory = createPath("out");
-
         while (true) {
             try(WatchService watchService = FileSystems.getDefault().newWatchService()){
                 ReadFilesServices readFilesServices = new ReadFilesServices();
@@ -27,6 +29,7 @@ public class MonitoryFiles {
                     if (event.context().toString().endsWith(".dat")) {
                         logger.info("Relatório do arquivo " + event.context() + " sendo gerado ...");
                          textFile = readFilesServices.readEachFile(inDirectory,event);
+                         writeFilesService.writeOnFile(outDirectory,event,textFile);
                     } else {
                         logger.warn("O arquivo " + event.context().toString() + " não termina com a extensão .dat");
                     }
@@ -43,10 +46,14 @@ public class MonitoryFiles {
     }
 
     public static Path createPath( String inOut) {
-        return (Paths.get(
+        Path path = Paths.get(
                 System.getProperty("user.home").concat(File.separator).concat("data").
                         concat(File.separator).
-                        concat(inOut)
-        ));
+                        concat(inOut));
+        File diretorio = new File(path.toString());
+        if (!diretorio.exists()) {
+            diretorio.mkdirs();
+        }
+        return path;
     }
 }
