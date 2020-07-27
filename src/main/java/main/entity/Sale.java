@@ -60,7 +60,6 @@ public class Sale {
         for (int i = 0; i < items.size(); i++){
             total = total.add(items.get(i).getPrice());
         }
-        System.out.println(total);
         this.totalSale = total;
     }
 

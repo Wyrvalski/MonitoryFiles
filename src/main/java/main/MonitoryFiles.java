@@ -30,14 +30,13 @@ public class MonitoryFiles {
                     List<Object> textFile = new ArrayList<>();
                     if (event.context().toString().endsWith(".dat")) {
                         logger.info("Relatório do arquivo " + event.context() + " sendo gerado ...");
-                         textFile = readFilesServices.readEachFile(inDirectory,event);
+                         textFile = readFilesServices.mountObjects(inDirectory,event.context().toString());
                          writeFilesService.writeOnFile(outDirectory,event,textFile);
                     } else {
                         logger.warn("O arquivo " + event.context().toString() + " não termina com a extensão .dat");
                     }
-                    System.out.println(textFile);
-                    System.out.println(readFilesServices.getBiggerSale(textFile));
                 }
+                key.reset();
            } catch (IOException ex) {
                 logger.error(ex.getMessage());
                 throw new RuntimeException(ex.getMessage());
