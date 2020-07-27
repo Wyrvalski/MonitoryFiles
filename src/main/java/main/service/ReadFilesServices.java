@@ -17,11 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+
 public class ReadFilesServices {
     Logger logger = LoggerFactory.getLogger(ReadFilesServices.class);
     public List<Object> readEachFile(Path inDirectory, WatchEvent<?> event) {
         try {
-            List<String> lines = Files.readAllLines(inDirectory.resolve((Path) event.context()));
+            List<String> lines = Files.readAllLines(inDirectory.resolve((Path) event.context()),ISO_8859_1);
             return mountObjects(lines);
         } catch (IOException ex) {
             logger.error(ex.getMessage());
