@@ -57,4 +57,10 @@ public class ReadFilesServices {
         };
         return allDataInFile;
     }
+
+    public Sale getBiggerSale(List<Object> allDataInFile) {
+        SaleService saleService = new SaleService();
+        Sale sale = saleService.getBiggerSale(allDataInFile);
+        return sale;
+    }
 }

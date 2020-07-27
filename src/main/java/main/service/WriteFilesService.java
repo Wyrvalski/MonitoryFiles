@@ -23,7 +23,6 @@ public class WriteFilesService {
         try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(event.context().toString().replace(".dat", ".done.dat")))) {
             SalesmanService salesmanService = new SalesmanService();
             this.salesmen = salesmanService.getAllSalesman(textFile);
-            System.out.println(salesmen.get(0).toString());
             writer.write("Teste");
         } catch (IOException ex) {
 

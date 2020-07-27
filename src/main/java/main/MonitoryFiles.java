@@ -10,21 +10,23 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MonitoryFiles {
     public static void main(String[] args){
         Logger logger = LoggerFactory.getLogger(MonitoryFiles.class);
         WriteFilesService writeFilesService = new WriteFilesService();
+        ReadFilesServices readFilesServices = new ReadFilesServices();
         Path inDirectory = createPath("in");
         Path outDirectory = createPath("out");
         while (true) {
             try(WatchService watchService = FileSystems.getDefault().newWatchService()){
-                ReadFilesServices readFilesServices = new ReadFilesServices();
                 inDirectory.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
                 WatchKey key = watchService.take();
-                Thread.sleep(1000);
                 logger.info("Gerando relatorio dos arquivos... ");
+                watchService.poll(5, TimeUnit.SECONDS);
                 for (WatchEvent<?> event : key.pollEvents()) {
+                    watchService.poll(5, TimeUnit.SECONDS);
                     List<Object> textFile = new ArrayList<>();
                     if (event.context().toString().endsWith(".dat")) {
                         logger.info("Relatório do arquivo " + event.context() + " sendo gerado ...");
@@ -33,8 +35,10 @@ public class MonitoryFiles {
                     } else {
                         logger.warn("O arquivo " + event.context().toString() + " não termina com a extensão .dat");
                     }
+                    System.out.println(textFile);
+                    System.out.println(readFilesServices.getBiggerSale(textFile));
                 }
-            } catch (IOException ex) {
+           } catch (IOException ex) {
                 logger.error(ex.getMessage());
                 throw new RuntimeException(ex.getMessage());
             } catch (InterruptedException ex) {
