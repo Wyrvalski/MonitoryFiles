@@ -46,10 +46,14 @@ public class MonitoryFiles {
     }
 
     public static Path createPath( String inOut) {
-        return (Paths.get(
+        Path path = Paths.get(
                 System.getProperty("user.home").concat(File.separator).concat("data").
                         concat(File.separator).
-                        concat(inOut)
-        ));
+                        concat(inOut));
+        File diretorio = new File(path.toString());
+        if (!diretorio.exists()) {
+            diretorio.mkdirs();
+        }
+        return path;
     }
 }
