@@ -18,25 +18,15 @@ public class Item {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 
     public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
     public String toString() {
         return "Item(id=" + this.getId() + ", quantity=" + this.getQuantity() + ", price=" + this.getPrice() + ")";
     }

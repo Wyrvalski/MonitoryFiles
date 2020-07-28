@@ -17,14 +17,16 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ReadFilesServices {
-    SaleService saleService = new SaleService();
-    SalesmanService salesmanService = new SalesmanService();
-    List<Object> allDataInFile = new ArrayList<>();
-    Logger logger = LoggerFactory.getLogger(ReadFilesServices.class);
+
+    public SaleService saleService = new SaleService();
+    public SalesmanService salesmanService = new SalesmanService();
+    public List<Object> allDataInFile = new ArrayList<>();
+    public Logger logger = LoggerFactory.getLogger(ReadFilesServices.class);
+
 
     public List<String> readEachFile(Path inDirectory, String event) {
         try {
-            List<String> lines = Files.readAllLines(inDirectory.resolve(event),ISO_8859_1);
+            List<String> lines = Files.readAllLines(inDirectory.resolve(event));
             return lines;
         } catch (IOException ex) {
             this.logger.error(ex.getMessage());
@@ -34,7 +36,6 @@ public class ReadFilesServices {
 
     public List<Object> mountObjects(Path inDirectory, String event) {
         List<String> lines = readEachFile(inDirectory,event);
-
         for (String line : lines) {
             String id = line.substring(0, 3);
             String[] parte = line.split("ç");

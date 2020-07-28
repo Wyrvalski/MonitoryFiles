@@ -1,30 +1,28 @@
 package main.service;
-
 import main.entity.Client;
-import main.entity.Item;
-import main.entity.Sale;
 import main.entity.Salesman;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
-import java.util.ArrayList;
 import java.util.List;
 
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 public class WriteFilesService {
-    ClientService clientService = new ClientService();
-    List<Item> items = new ArrayList<>();
-    SaleService saleService = new SaleService();
-    SalesmanService salesmanService = new SalesmanService();
+    private ClientService clientService;
+    private SaleService saleService ;
+    private SalesmanService salesmanService = new SalesmanService();
+    private List<Object> allDataInFile;
 
-    public void writeOnFile (Path outDirectory, WatchEvent<?> event, List<Object> textFile) {
-        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(event.context().toString().replace(".dat", ".done.dat")),ISO_8859_1)) {
-            writer.write(mountOutPutFile(textFile));
+    public WriteFilesService(List<Object> allDataInFile) {
+        this.clientService = new ClientService();
+        this.saleService = new SaleService(allDataInFile);
+        this.allDataInFile = allDataInFile;
+    }
+
+    public void writeOnFile (Path outDirectory, WatchEvent<?> event) {
+        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve("Vamosver.dat"))) {
+            writer.write(mountOutPutFile(this.allDataInFile));
         } catch (IOException ex) {
 
         }
@@ -33,9 +31,10 @@ public class WriteFilesService {
     public String mountOutPutFile(List<Object> allDataInFile) {
         List<Salesman> salesmen = salesmanService.getAllSalesman(allDataInFile);
         List<Client> clients = clientService.getAllClient(allDataInFile);
-        Salesman salesman = saleService.getWorstSalesman(allDataInFile);
+        Salesman salesman = saleService.getWorstSalesman();
         String id = saleService.getBiggerSale(allDataInFile).getId();
+        System.out.println(clients.size());
+        System.out.printf("%o", clients.size());
         return String.format("%oç%oç%sç%s",clients.size(),salesmen.size(),id,salesman.getName());
     }
-
 }

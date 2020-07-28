@@ -23,28 +23,12 @@ public class Sale {
 
     }
 
-    public Integer getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
-    }
-
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public List<Item> getItems() {
         return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
     }
 
     public Salesman getSalesman() {
@@ -63,9 +47,6 @@ public class Sale {
         this.totalSale = total;
     }
 
-    public void setSalesman(Salesman salesman) {
-        this.salesman = salesman;
-    }
     public String toString() {
         return "Sale(id=" + this.getId() + ", items=" + this.getItems() + ", vendedor=" + this.getSalesman().getName() + "total: " + this.getTotalSale() +")";
     }

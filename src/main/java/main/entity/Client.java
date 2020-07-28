@@ -14,37 +14,18 @@ public class Client {
         this.area = area;
     }
 
-    public Integer getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getCnpj() {
         return cnpj;
     }
 
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
     public String getArea() {
         return area;
     }
 
-    public void setArea(String area) {
-        this.area = area;
-    }
     public String toString() {
         return "Client(name=" + this.getName() + ", cnpj=" + this.getCnpj() + ", area=" + this.getArea() + ")";
     }

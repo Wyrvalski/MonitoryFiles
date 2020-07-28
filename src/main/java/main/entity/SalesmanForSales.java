@@ -20,15 +20,8 @@ public class SalesmanForSales {
         return salesman;
     }
 
-    public void setSalesman(String salesman) {
-        this.salesman = salesman;
-    }
-
     public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
 }

@@ -9,11 +9,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SaleService {
-    List<Salesman> salesmen = new ArrayList<>();
+
+    public List<Sale> sales;
+    public List<SalesmanForSales> salesmanForSales = new ArrayList<>();
+    public List<Salesman> salesmen = new ArrayList<>();
+    public SalesmanService salesmanService = new SalesmanService();
+    public String items;
+    public ItemService itemService = new ItemService();
+
+    public SaleService() {
+
+    }
+
+    public SaleService(List<Object> allDataInFile) {
+        this.sales = getAllSale(allDataInFile);
+        this.salesmen = salesmanService.getAllSalesman(allDataInFile);
+        this.salesmanForSales = getAllSalesForSalesman(allDataInFile);
+    }
 
     public List<Item> mountItensInSale( String line ) {
-        String itens = ItemService.getItemsInLine(line);
-        String[] separatorItens = itens.split(",");
+        this.items = itemService.getItemsInLine(line);
+        String[] separatorItens = this.items.split(",");
         List<Item> arrayItems = new ArrayList<>();
 
         for (int i = 0; i < separatorItens.length; i ++) {
@@ -24,60 +40,53 @@ public class SaleService {
     }
 
     public List<Sale> getAllSale(List<Object> allDataInFile) {
-        List<Sale> sales = new ArrayList<>();
+        List<Sale> listSales = new ArrayList<>();
         for (int i =0; i < allDataInFile.size(); i++) {
             if (allDataInFile.get(i) instanceof Sale) {
-                sales.add((Sale) allDataInFile.get(i));
+                listSales.add((Sale) allDataInFile.get(i));
             }
         }
-        return sales;
+        return listSales;
     }
 
     public Sale getBiggerSale(List<Object> allDataInFile) {
-        List<Sale> sales = getAllSale(allDataInFile);
+        this.sales = getAllSale(allDataInFile);
         Sale biggerSale = new Sale();
-        biggerSale = sales.get(0);
-        for (int i = 0; i < sales.size(); i++ ) {
-            int res = biggerSale.getTotalSale().compareTo(sales.get(i).getTotalSale());
+        biggerSale = this.sales.get(0);
+        for (int i = 0; i < this.sales.size(); i++ ) {
+            int res = biggerSale.getTotalSale().compareTo(this.sales.get(i).getTotalSale());
             if(res == -1) {
-                biggerSale = sales.get(i);
+                biggerSale = this.sales.get(i);
             }
         }
         return biggerSale;
     }
 
     public List<SalesmanForSales> getAllSalesForSalesman (List<Object> allDataInFile) {
-        List <Salesman> salesmen = SalesmanService.getAllSalesman(allDataInFile);
-        List<Sale> sales = getAllSale(allDataInFile);
         BigDecimal soma = new BigDecimal("0.00");
-        List<SalesmanForSales> salesmanForSales = new ArrayList<>();
-        for (int i = 0; i < salesmen.size(); i++) {
-            for (int j = 0; j < sales.size(); j++) {
-                if (salesmen.get(i).getName().equals(sales.get(j).getSalesman().getName())) {
-                    soma = soma.add(sales.get(j).getTotalSale());
+        for (int i = 0; i < this.salesmen.size(); i++) {
+            for (int j = 0; j < this.sales.size(); j++) {
+                if (this.salesmen.get(i).getName().equals(this.sales.get(j).getSalesman().getName())) {
+                    soma = soma.add(this.sales.get(j).getTotalSale());
                 }
             }
-            salesmanForSales.add(new SalesmanForSales(salesmen.get(i).getName(),soma));
+            this.salesmanForSales.add(new SalesmanForSales(this.salesmen.get(i).getName(),soma));
             soma = BigDecimal.ZERO;
 
         }
-        return salesmanForSales;
+        return this.salesmanForSales;
     }
 
-    public Salesman getWorstSalesman(List<Object> allDataInFile) {
-        List<SalesmanForSales> salesmanForSales = getAllSalesForSalesman(allDataInFile);
-        List <Salesman> salesmen = SalesmanService.getAllSalesman(allDataInFile);
-        SalesmanService salesmanService = new SalesmanService();
-        String worstSalesmanName = salesmanForSales.get(0).getSalesman();
-        BigDecimal total = salesmanForSales.get(0).getTotal();
-        for (int i = 0; i < salesmanForSales.size(); i++) {
-                if (total.doubleValue() > salesmanForSales.get(i).getTotal().doubleValue()) {
-                    total = salesmanForSales.get(i).getTotal();
-                    worstSalesmanName = salesmanForSales.get(i).getSalesman();
-
+    public Salesman getWorstSalesman() {
+        System.out.println(this.salesmanForSales.get(0).getSalesman());
+        String worstSalesmanName = this.salesmanForSales.get(0).getSalesman();
+        BigDecimal total = this.salesmanForSales.get(0).getTotal();
+        for (int i = 0; i < this.salesmanForSales.size(); i++) {
+                if (total.doubleValue() > this.salesmanForSales.get(i).getTotal().doubleValue()) {
+                    total = this.salesmanForSales.get(i).getTotal();
+                    worstSalesmanName = this.salesmanForSales.get(i).getSalesman();
                 }
         }
-
         Salesman worstSalesman = salesmanService.getSalesmanByName(worstSalesmanName,salesmen);
         return worstSalesman;
     }

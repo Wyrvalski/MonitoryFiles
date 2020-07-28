@@ -14,9 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 public class MonitoryFiles {
     public static void main(String[] args) {
-//
         Logger logger = LoggerFactory.getLogger(MonitoryFiles.class);
-        WriteFilesService writeFilesService = new WriteFilesService();
+
         ReadFilesServices readFilesServices = new ReadFilesServices();
         Path inDirectory = createPath("in");
         Path outDirectory = createPath("out");
@@ -36,8 +35,11 @@ public class MonitoryFiles {
 
                     if (event.context().toString().endsWith(".dat")) {
                         logger.info("Relatório do arquivo " + event.context() + " sendo gerado ...");
-                         textFile = readFilesServices.mountObjects(inDirectory,event.context().toString());
-                         writeFilesService.writeOnFile(outDirectory,event,textFile);
+
+                        textFile = readFilesServices.mountObjects(inDirectory,event.context().toString());
+                        WriteFilesService writeFilesService = new WriteFilesService(textFile);
+
+                         writeFilesService.writeOnFile(outDirectory,event);
                     } else {
                         logger.warn("O arquivo " + event.context().toString() + " não termina com a extensão .dat");
                     }
