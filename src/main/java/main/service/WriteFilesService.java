@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class WriteFilesService {
@@ -21,7 +23,8 @@ public class WriteFilesService {
     }
 
     public void writeOnFile (Path outDirectory, WatchEvent<?> event) {
-        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve("Vamosver.dat"))) {
+        String filename = LocalDate.now().format(DateTimeFormatter.ofPattern("d-MM-uuuu")) + "-RelatiorioDetalhado.done.dat";
+        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename))) {
             writer.write(mountOutPutFile(this.allDataInFile));
         } catch (IOException ex) {
 
@@ -33,8 +36,6 @@ public class WriteFilesService {
         List<Client> clients = clientService.getAllClient(allDataInFile);
         Salesman salesman = saleService.getWorstSalesman();
         String id = saleService.getBiggerSale(allDataInFile).getId();
-        System.out.println(clients.size());
-        System.out.printf("%o", clients.size());
         return String.format("%oç%oç%sç%s",clients.size(),salesmen.size(),id,salesman.getName());
     }
 }

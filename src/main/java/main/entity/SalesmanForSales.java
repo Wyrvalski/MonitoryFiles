@@ -7,10 +7,6 @@ public class SalesmanForSales {
     private String salesman;
     private BigDecimal total;
 
-    public SalesmanForSales() {
-
-    }
-
     public SalesmanForSales(String salesman, BigDecimal total) {
         this.salesman = salesman;
         this.total = total;

@@ -2,13 +2,11 @@ package main.entity;
 
 public class Client {
 
-    private Integer groupId;
     private String name;
     private String cnpj;
     private String area;
 
     public Client(Integer groupId, String name, String cnpj, String area) {
-        this.groupId = groupId;
         this.name = name;
         this.cnpj = cnpj;
         this.area = area;
