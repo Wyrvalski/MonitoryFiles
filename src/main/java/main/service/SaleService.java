@@ -1,8 +1,7 @@
 package main.service;
-import main.entity.Item;
-import main.entity.Sale;
-import main.entity.Salesman;
-import main.entity.SalesmanForSales;
+import main.entity.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,8 +12,12 @@ public class SaleService {
     public List<Sale> sales;
     public List<SalesmanForSales> salesmanForSales = new ArrayList<>();
     public List<Salesman> salesmen = new ArrayList<>();
+    public List<Item> items = new ArrayList<>();
+    public Salesman salesman;
     public SalesmanService salesmanService = new SalesmanService();
-    public String items;
+    public Logger logger = LoggerFactory.getLogger(ClientService.class);
+
+
     public SaleService() {
 
     }
@@ -25,9 +28,30 @@ public class SaleService {
         this.salesmanForSales = getAllSalesForSalesman(allDataInFile);
     }
 
+    public Boolean salesExists(String id, List<Sale> sales) {
+        for (int i = 0; i < sales.size(); i++) {
+            if (sales.get(i).getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Sale createSale(String[] parte, List<Object> allDataInFile, int lineNumber) {
+        this.sales = getAllSale(allDataInFile);
+        this.salesmen = salesmanService.getAllSalesman(allDataInFile);
+        this.salesman = salesmanService.getSalesmanByName(parte[3], this.salesmen);
+        this.items = mountItensInSale(parte[2]);
+        if ( !salesExists(parte[1],this.sales)){
+            return new Sale(parte[1],this.items,this.salesman);
+        }
+        this.logger.info("Salee da linha " + lineNumber + " já está cadastrado");
+        return null;
+    }
+
     public List<Item> mountItensInSale( String line ) {
-        this.items = ItemService.getItemsInLine(line);
-        String[] separatorItens = this.items.split(",");
+        String items = ItemService.getItemsInLine(line);
+        String[] separatorItens = items.split(",");
         List<Item> arrayItems = new ArrayList<>();
 
         for (int i = 0; i < separatorItens.length; i ++) {
@@ -60,15 +84,22 @@ public class SaleService {
         return biggerSale;
     }
 
+    //Buscar o total de todas as vendas de cada vendedor
     public List<SalesmanForSales> getAllSalesForSalesman (List<Object> allDataInFile) {
         BigDecimal soma = new BigDecimal("0.00");
-        for (int i = 0; i < this.salesmen.size(); i++) {
-            for (int j = 0; j < this.sales.size(); j++) {
-                if (this.salesmen.get(i).getName().equals(this.sales.get(j).getSalesman().getName())) {
-                    soma = soma.add(this.sales.get(j).getTotalSale());
+        List<Salesman> salesmen = salesmanService.getAllSalesman(allDataInFile);
+
+        List<Sale> sales = getAllSale(allDataInFile);
+
+        for (int i = 0; i < salesmen.size(); i++) {
+            for (int j = 0; j < sales.size(); j++) {
+                if (salesmen.get(i).getName().equals(sales.get(j).getSalesman().getName())) {
+                    soma = soma.add(sales.get(j).getTotalSale());
                 }
             }
-            this.salesmanForSales.add(new SalesmanForSales(this.salesmen.get(i).getName(),soma));
+
+            salesmanForSales.add(new SalesmanForSales(salesmen.get(i).getName(),soma));
+
             soma = BigDecimal.ZERO;
 
         }
@@ -76,7 +107,6 @@ public class SaleService {
     }
 
     public Salesman getWorstSalesman() {
-        System.out.println(this.salesmanForSales.get(0).getSalesman());
         String worstSalesmanName = this.salesmanForSales.get(0).getSalesman();
         BigDecimal total = this.salesmanForSales.get(0).getTotal();
         for (int i = 0; i < this.salesmanForSales.size(); i++) {

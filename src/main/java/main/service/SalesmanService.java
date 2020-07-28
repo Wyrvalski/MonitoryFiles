@@ -1,5 +1,4 @@
 package main.service;
-import main.entity.Client;
 import main.entity.Salesman;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,7 @@ public class SalesmanService {
     }
 
     public Boolean salesmanExists(String cpf, List<Salesman> salesmen) {
-        for (int i = 0; i < this.salesmen.size(); i++) {
+        for (int i = 0; i < salesmen.size(); i++) {
             if (salesmen.get(i).getCpf().equals(cpf)) {
                 return true;
             }
@@ -36,13 +35,14 @@ public class SalesmanService {
     public Salesman createSalesman(String[] parte, List<Object> allDataInFile, int lineNumber) {
         this.salesmen = getAllSalesman(allDataInFile);
         if ( !salesmanExists(parte[1],salesmen)){
-            return new Salesman(Integer.parseInt(parte[0]),parte[2],parte[1],new BigDecimal(parte[3]));
+            return new Salesman(parte[2],parte[1],new BigDecimal(parte[3]));
         }
         this.logger.info("Vendedor da linha " + lineNumber +" já está cadastrado");
         return null;
     }
 
     public List<Salesman> getAllSalesman(List<Object> allDataInFile) {
+
         this.salesmen = allDataInFile.stream().filter(salesman -> salesman instanceof Salesman).
                 map(salesman -> (Salesman) salesman).collect(Collectors.toList());
         return this.salesmen;

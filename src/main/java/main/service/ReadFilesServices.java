@@ -1,29 +1,19 @@
 package main.service;
-import main.entity.Client;
-import main.entity.Item;
-import main.entity.Sale;
-import main.entity.Salesman;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ReadFilesServices {
 
     public SaleService saleService = new SaleService();
     public SalesmanService salesmanService = new SalesmanService();
-    ClientService clientService = new ClientService();
+    public ClientService clientService = new ClientService();
     public List<Object> allDataInFile = new ArrayList<>();
     public Logger logger = LoggerFactory.getLogger(ReadFilesServices.class);
-
 
     public List<String> readEachFile(Path inDirectory, String event) {
         try {
@@ -37,7 +27,6 @@ public class ReadFilesServices {
 
     public List<Object> mountObjects(Path inDirectory, String event) {
         List<String> lines = readEachFile(inDirectory,event);
-        System.out.println(this.allDataInFile);
         int lineNumber = 0;
         for (String line : lines) {
             lineNumber++;
@@ -51,11 +40,7 @@ public class ReadFilesServices {
                     this.allDataInFile.add(clientService.createClient(parte,this.allDataInFile, lineNumber));
                     break;
                 case "003":
-                    List<Salesman> salesmen = this.allDataInFile.stream().filter( salesman -> salesman instanceof  Salesman )
-                            .map( salesman -> (Salesman) salesman).collect(Collectors.toList());
-                    List<Item> arrayItems = this.saleService.mountItensInSale(line);
-                    this.allDataInFile.add(new Sale(Integer.parseInt(parte[0]),parte[1],arrayItems,
-                            this.salesmanService.getSalesmanByName(parte[3],salesmen)));
+                    this.allDataInFile.add(saleService.createSale(parte,this.allDataInFile,lineNumber));
                     break;
                 default:
                     this.logger.warn("a linha " + line + " não inicia com nenhum id valido");

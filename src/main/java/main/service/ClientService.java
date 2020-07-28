@@ -1,8 +1,5 @@
 package main.service;
-
-import main.MonitoryFiles;
 import main.entity.Client;
-import main.entity.Sale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +19,7 @@ public class ClientService {
     }
 
     public Boolean clientExists(String cnpj, List<Client> clients) {
-        for (int i = 0; i < this.clients.size(); i++) {
+        for (int i = 0; i < clients.size(); i++) {
             if (clients.get(i).getCnpj().equals(cnpj)) {
                 return true;
             }

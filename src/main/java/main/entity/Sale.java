@@ -5,18 +5,16 @@ import java.util.List;
 
 public class Sale {
 
-    private Integer groupId;
     private String id;
     private List<Item> items;
     private Salesman salesman;
     private BigDecimal totalSale;
 
-    public Sale(Integer groupId, String id, List<Item> items, Salesman salesman) {
-        this.groupId = groupId;
+    public Sale(String id, List<Item> items, Salesman salesman) {
         this.id = id;
         this.items = items;
         this.salesman = salesman;
-        setTotalSale(items);
+        this.totalSale = setTotalSale(items);
     }
 
     public Sale() {
@@ -39,12 +37,12 @@ public class Sale {
         return totalSale;
     }
 
-    public void setTotalSale(List<Item> items) {
+    public BigDecimal setTotalSale(List<Item> items) {
         BigDecimal total = new BigDecimal("0.00");
         for (int i = 0; i < items.size(); i++){
             total = total.add(items.get(i).getPrice());
         }
-        this.totalSale = total;
+        return this.totalSale = total;
     }
 
     public String toString() {

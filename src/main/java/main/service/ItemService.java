@@ -7,4 +7,5 @@ public class ItemService {
         int posInicial = line.indexOf("[");
         return line.substring(posInicial + 1, posFinal);
     }
+
 }
