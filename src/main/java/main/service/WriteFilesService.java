@@ -26,7 +26,6 @@ public class WriteFilesService {
     }
 
 
-<<<<<<< Updated upstream
     public void writeOnFile (Path outDirectory, WatchEvent<?> event) {
 
         String filename = LocalDate.now().format(DateTimeFormatter.ofPattern("d-MM-uuuu")) + "-RelatiorioDetalhado.done.dat";
@@ -41,10 +40,6 @@ public class WriteFilesService {
         } catch (IOException ex) {
 
         }
-=======
-    public void writeOnFile (Path outDirectory) {
-        
->>>>>>> Stashed changes
     }
 
     public String mountOutPutFile(List<Object> allDataInFile) {
