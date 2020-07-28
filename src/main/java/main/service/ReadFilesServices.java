@@ -19,7 +19,7 @@ public class ReadFilesServices {
     public Logger logger = LoggerFactory.getLogger(ReadFilesServices.class);
 
     public List<String> readEachFile(Path inDirectory, String event) {
-        List<String> lines = new ArrayList<>();
+        List<String> lines;
         try {
         if (System.getProperty("os.name").contains("Windows")) {
             lines = Files.readAllLines(inDirectory.resolve(event), ISO_8859_1) ;
