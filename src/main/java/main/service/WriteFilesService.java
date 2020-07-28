@@ -3,12 +3,15 @@ import main.entity.Client;
 import main.entity.Salesman;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public class WriteFilesService {
     private ClientService clientService;
@@ -22,10 +25,16 @@ public class WriteFilesService {
         this.allDataInFile = allDataInFile;
     }
 
+
     public void writeOnFile (Path outDirectory, WatchEvent<?> event) {
+        Charset charSet = null;
+        if (System.getProperty("os.name").contains("Windows")) {
+            charSet = ISO_8859_1;
+        }
         String filename = LocalDate.now().format(DateTimeFormatter.ofPattern("d-MM-uuuu")) + "-RelatiorioDetalhado.done.dat";
-        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename))) {
+        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename), charSet)) {
             writer.write(mountOutPutFile(this.allDataInFile));
+            System.out.println(System.getProperty("os.name"));
         } catch (IOException ex) {
 
         }

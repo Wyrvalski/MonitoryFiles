@@ -2,10 +2,13 @@ package main.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public class ReadFilesServices {
 
@@ -16,8 +19,12 @@ public class ReadFilesServices {
     public Logger logger = LoggerFactory.getLogger(ReadFilesServices.class);
 
     public List<String> readEachFile(Path inDirectory, String event) {
+        Charset charSet = null;
+        if (System.getProperty("os.name").contains("Windows")) {
+            charSet = ISO_8859_1;
+        }
         try {
-            List<String> lines = Files.readAllLines(inDirectory.resolve(event));
+            List<String> lines = Files.readAllLines(inDirectory.resolve(event), charSet);
             return lines;
         } catch (IOException ex) {
             this.logger.error(ex.getMessage());
