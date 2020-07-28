@@ -29,13 +29,7 @@ public class WriteFilesService {
     public void writeOnFile (Path outDirectory, WatchEvent<?> event) {
 
         String filename = LocalDate.now().format(DateTimeFormatter.ofPattern("d-MM-uuuu")) + "-RelatiorioDetalhado.done.dat";
-        try  {
-            BufferedWriter writer;
-            if (System.getProperty("os.name").contains("Windows")) {
-                writer = Files.newBufferedWriter(outDirectory.resolve(filename), ISO_8859_1);
-            } else {
-                writer = Files.newBufferedWriter(outDirectory.resolve(filename));
-            }
+        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename), ISO_8859_1)) {
             writer.write(mountOutPutFile(this.allDataInFile));
         } catch (IOException ex) {
 
