@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class WriteFilesService {
     private ClientService clientService;
@@ -27,13 +26,16 @@ public class WriteFilesService {
     }
 
 
-    public void writeOnFile (Path outDirectory) {
+    public void writeOnFile (Path outDirectory, WatchEvent<?> event) {
+
         String filename = LocalDate.now().format(DateTimeFormatter.ofPattern("d-MM-uuuu")) + "-RelatiorioDetalhado.done.dat";
-        Charset charset = UTF_8;
-        if (System.getProperty("os.name").contains("Windows")){
-            charset = ISO_8859_1;
-        }
-        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename), charset)) {
+        try  {
+            BufferedWriter writer;
+            if (System.getProperty("os.name").contains("Windows")) {
+                writer = Files.newBufferedWriter(outDirectory.resolve(filename), ISO_8859_1);
+            } else {
+                writer = Files.newBufferedWriter(outDirectory.resolve(filename));
+            }
             writer.write(mountOutPutFile(this.allDataInFile));
         } catch (IOException ex) {
 
