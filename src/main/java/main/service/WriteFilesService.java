@@ -1,6 +1,10 @@
 package main.service;
+import main.MonitoryFiles;
 import main.entity.Client;
 import main.entity.Salesman;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +25,8 @@ public class WriteFilesService {
     }
 
     public void writeOnFile (Path outDirectory, WatchEvent<?> event) {
-        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve("Vamosver.dat"))) {
+        String filename = "RelatiorioDetalhado.done.dat";
+        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename))) {
             writer.write(mountOutPutFile(this.allDataInFile));
         } catch (IOException ex) {
 

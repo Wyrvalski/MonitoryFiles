@@ -20,6 +20,7 @@ public class ReadFilesServices {
 
     public SaleService saleService = new SaleService();
     public SalesmanService salesmanService = new SalesmanService();
+    ClientService clientService = new ClientService();
     public List<Object> allDataInFile = new ArrayList<>();
     public Logger logger = LoggerFactory.getLogger(ReadFilesServices.class);
 
@@ -36,31 +37,32 @@ public class ReadFilesServices {
 
     public List<Object> mountObjects(Path inDirectory, String event) {
         List<String> lines = readEachFile(inDirectory,event);
+        System.out.println(this.allDataInFile);
+        int lineNumber = 0;
         for (String line : lines) {
+            lineNumber++;
             String id = line.substring(0, 3);
             String[] parte = line.split("ç");
             switch (id) {
                 case "001" :
-                    this.allDataInFile.add(new Salesman(Integer.parseInt(parte[0]),parte[2],parte[1],new BigDecimal(parte[3])));
+                    this.allDataInFile.add(salesmanService.createSalesman(parte,this.allDataInFile, lineNumber));
                     break;
                 case "002":
-                    this.allDataInFile.add(new Client(Integer.parseInt(parte[0]),parte[2],parte[1],parte[3]));
+                    this.allDataInFile.add(clientService.createClient(parte,this.allDataInFile, lineNumber));
                     break;
                 case "003":
-                    List<Salesman> salesmen = this.allDataInFile.stream().filter( salesman -> salesman instanceof  Salesman ).map( salesman -> (Salesman) salesman).collect(Collectors.toList());
+                    List<Salesman> salesmen = this.allDataInFile.stream().filter( salesman -> salesman instanceof  Salesman )
+                            .map( salesman -> (Salesman) salesman).collect(Collectors.toList());
                     List<Item> arrayItems = this.saleService.mountItensInSale(line);
-                    this.allDataInFile.add(new Sale(Integer.parseInt(parte[0]),parte[1],arrayItems,this.salesmanService.getSalesmanByName(parte[3],salesmen)));
+                    this.allDataInFile.add(new Sale(Integer.parseInt(parte[0]),parte[1],arrayItems,
+                            this.salesmanService.getSalesmanByName(parte[3],salesmen)));
                     break;
                 default:
                     this.logger.warn("a linha " + line + " não inicia com nenhum id valido");
                     break;
             }
         };
+        lineNumber = 0;
         return this.allDataInFile;
-    }
-
-    public Sale getBiggerSale(List<Object> allDataInFile) {
-        Sale sale = this.saleService.getBiggerSale(allDataInFile);
-        return sale;
     }
 }

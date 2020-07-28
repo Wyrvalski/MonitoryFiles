@@ -15,8 +15,6 @@ public class SaleService {
     public List<Salesman> salesmen = new ArrayList<>();
     public SalesmanService salesmanService = new SalesmanService();
     public String items;
-    public ItemService itemService = new ItemService();
-
     public SaleService() {
 
     }
@@ -28,7 +26,7 @@ public class SaleService {
     }
 
     public List<Item> mountItensInSale( String line ) {
-        this.items = itemService.getItemsInLine(line);
+        this.items = ItemService.getItemsInLine(line);
         String[] separatorItens = this.items.split(",");
         List<Item> arrayItems = new ArrayList<>();
 
