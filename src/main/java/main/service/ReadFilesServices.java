@@ -19,12 +19,13 @@ public class ReadFilesServices {
     public Logger logger = LoggerFactory.getLogger(ReadFilesServices.class);
 
     public List<String> readEachFile(Path inDirectory, String event) {
-        Charset charSet = null;
-        if (System.getProperty("os.name").contains("Windows")) {
-            charSet = ISO_8859_1;
-        }
+        List<String> lines = new ArrayList<>();
         try {
-            List<String> lines = Files.readAllLines(inDirectory.resolve(event), charSet);
+        if (System.getProperty("os.name").contains("Windows")) {
+            lines = Files.readAllLines(inDirectory.resolve(event), ISO_8859_1) ;
+        } else {
+            lines = Files.readAllLines(inDirectory.resolve(event)) ;
+        }
             return lines;
         } catch (IOException ex) {
             this.logger.error(ex.getMessage());

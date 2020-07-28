@@ -27,14 +27,16 @@ public class WriteFilesService {
 
 
     public void writeOnFile (Path outDirectory, WatchEvent<?> event) {
-        Charset charSet = null;
-        if (System.getProperty("os.name").contains("Windows")) {
-            charSet = ISO_8859_1;
-        }
+
         String filename = LocalDate.now().format(DateTimeFormatter.ofPattern("d-MM-uuuu")) + "-RelatiorioDetalhado.done.dat";
-        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename), charSet)) {
+        try  {
+            BufferedWriter writer;
+            if (System.getProperty("os.name").contains("Windows")) {
+                writer = Files.newBufferedWriter(outDirectory.resolve(filename), ISO_8859_1);
+            } else {
+                writer = Files.newBufferedWriter(outDirectory.resolve(filename));
+            }
             writer.write(mountOutPutFile(this.allDataInFile));
-            System.out.println(System.getProperty("os.name"));
         } catch (IOException ex) {
 
         }
