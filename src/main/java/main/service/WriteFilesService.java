@@ -33,13 +33,20 @@ public class WriteFilesService {
 
     public void writeOnFile (Path outDirectory, WatchEvent<?> event) {
 
-        String filename = LocalDate.now().format(DateTimeFormatter.ofPattern("d-MM-uuuu")) + "-RelatiorioDetalhado.done.dat";
+        String filename ="-Relatiorio.done.dat";
+        String filename2 = "RelatórioDetalhado.done.dat";
         Charset charset = UTF_8;
         if (System.getProperty("os.name").contains("Windows")){
             charset = ISO_8859_1;
         }
         try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename), charset)) {
             writer.write(mountOutPutFile(this.allDataInFile));
+        } catch (IOException ex) {
+            this.logger.error(ex.getMessage());
+            throw new RuntimeException(ex.getMessage());
+        }
+        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename2), charset)) {
+            writer.write(mountOutPutFileDetails(this.allDataInFile));
         } catch (IOException ex) {
             this.logger.error(ex.getMessage());
             throw new RuntimeException(ex.getMessage());
@@ -52,5 +59,18 @@ public class WriteFilesService {
         Salesman salesman = saleService.getWorstSalesman();
         String id = saleService.getBiggerSale(allDataInFile).getId();
         return String.format("%oç%oç%sç%s",clients.size(),salesmen.size(),id,salesman.getName());
+    }
+    public String mountOutPutFileDetails(List<Object> allDataInFile) {
+        List<Salesman> salesmen = salesmanService.getAllSalesman(allDataInFile);
+        List<Client> clients = clientService.getAllClient(allDataInFile);
+        Salesman salesman = saleService.getWorstSalesman();
+        String id = saleService.getBiggerSale(allDataInFile).getId();
+        String salesmanBiggerSale = saleService.getBiggerSale(allDataInFile).getSalesman().getName();
+
+        return String.format("Quantidade de clientes cadastrados = %o \n\n" +
+                "Quantiade de vendedores cadastrados = %o \n\n" +
+                "Id da maior venda = %s \n\n" +
+                "Vendedor da maior venda = %s \n\n" +
+                "Pior vendedor = %s",clients.size(),salesmen.size(),id,salesmanBiggerSale,salesman.getName());
     }
 }
