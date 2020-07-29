@@ -1,6 +1,9 @@
 package main.service;
 import main.entity.Client;
 import main.entity.Salesman;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -12,12 +15,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class WriteFilesService {
     private ClientService clientService;
     private SaleService saleService ;
     private SalesmanService salesmanService = new SalesmanService();
     private List<Object> allDataInFile;
+    public Logger logger = LoggerFactory.getLogger(WriteFilesService.class);
 
     public WriteFilesService(List<Object> allDataInFile) {
         this.clientService = new ClientService();
@@ -27,16 +32,17 @@ public class WriteFilesService {
 
 
     public void writeOnFile (Path outDirectory, WatchEvent<?> event) {
-        Charset charSet = null;
-        if (System.getProperty("os.name").contains("Windows")) {
-            charSet = ISO_8859_1;
-        }
-        String filename = LocalDate.now().format(DateTimeFormatter.ofPattern("d-MM-uuuu")) + "-RelatiorioDetalhado.done.dat";
-        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename), charSet)) {
-            writer.write(mountOutPutFile(this.allDataInFile));
-            System.out.println(System.getProperty("os.name"));
-        } catch (IOException ex) {
 
+        String filename = LocalDate.now().format(DateTimeFormatter.ofPattern("d-MM-uuuu")) + "-RelatiorioDetalhado.done.dat";
+        Charset charset = UTF_8;
+        if (System.getProperty("os.name").contains("Windows")){
+            charset = ISO_8859_1;
+        }
+        try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename), charset)) {
+            writer.write(mountOutPutFile(this.allDataInFile));
+        } catch (IOException ex) {
+            this.logger.error(ex.getMessage());
+            throw new RuntimeException(ex.getMessage());
         }
     }
 

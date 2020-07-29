@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class SalesmanService {
 
-    public Logger logger = LoggerFactory.getLogger(ClientService.class);
+    public Logger logger = LoggerFactory.getLogger(SalesmanService.class);
     public List<Salesman> salesmen = new ArrayList<>();
     public Salesman salesman = new Salesman();
 
@@ -37,7 +37,7 @@ public class SalesmanService {
         if ( !salesmanExists(parte[1],salesmen)){
             return new Salesman(parte[2],parte[1],new BigDecimal(parte[3]));
         }
-        this.logger.info("Vendedor da linha " + lineNumber +" já está cadastrado");
+        this.logger.warn("Vendedor da linha " + lineNumber +" já está cadastrado");
         return null;
     }
 
