@@ -32,7 +32,7 @@ public class ClientService {
         if ( !clientExists(parte[1],clients)){
             return new Client(Integer.parseInt(parte[0]),parte[2],parte[1],parte[3]);
         }
-        this.logger.info("Cliente da linha " + lineNumber + " já está cadastrado");
+        this.logger.warn("Cliente da linha " + lineNumber + " já está cadastrado");
         return null;
     }
 }

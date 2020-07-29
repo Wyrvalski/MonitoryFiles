@@ -19,12 +19,13 @@ public class MonitoryFiles {
         Path inDirectory = createPath("in");
         Path outDirectory = createPath("out");
         List<Object> textFile;
+        logger.debug("Monitor da pasta data/in está rodando...");
         while (true) {
             try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
                 inDirectory.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
                 WatchKey key = watchService.take();
 
-                logger.info("Gerando relatorio dos arquivos... ");
+                logger.debug("Gerando relatorio dos arquivos... ");
 
                 watchService.poll(5, TimeUnit.SECONDS);
 
@@ -37,7 +38,7 @@ public class MonitoryFiles {
                         logger.warn("O arquivo " + event.context().toString() + " não termina com a extensão .dat");
                     }
                 }
-                logger.info("Relatorio gerado com sucesso no arquivo Realátorio.done.dat");
+                logger.debug("Relatorio gerado com sucesso no arquivo Realátorio.done.dat");
                 key.reset();
             } catch (IOException | InterruptedException ex) {
                 logger.error(ex.getMessage());

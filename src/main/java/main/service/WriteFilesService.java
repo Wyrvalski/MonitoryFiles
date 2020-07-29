@@ -1,6 +1,9 @@
 package main.service;
 import main.entity.Client;
 import main.entity.Salesman;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -19,6 +22,7 @@ public class WriteFilesService {
     private SaleService saleService ;
     private SalesmanService salesmanService = new SalesmanService();
     private List<Object> allDataInFile;
+    public Logger logger = LoggerFactory.getLogger(WriteFilesService.class);
 
     public WriteFilesService(List<Object> allDataInFile) {
         this.clientService = new ClientService();
@@ -37,7 +41,8 @@ public class WriteFilesService {
         try (BufferedWriter writer = Files.newBufferedWriter(outDirectory.resolve(filename), charset)) {
             writer.write(mountOutPutFile(this.allDataInFile));
         } catch (IOException ex) {
-
+            this.logger.error(ex.getMessage());
+            throw new RuntimeException(ex.getMessage());
         }
     }
 

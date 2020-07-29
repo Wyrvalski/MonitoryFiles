@@ -15,7 +15,7 @@ public class SaleService {
     public List<Item> items = new ArrayList<>();
     public Salesman salesman;
     public SalesmanService salesmanService = new SalesmanService();
-    public Logger logger = LoggerFactory.getLogger(ClientService.class);
+    public Logger logger = LoggerFactory.getLogger(SaleService.class);
 
 
     public SaleService() {
@@ -45,7 +45,7 @@ public class SaleService {
         if ( !salesExists(parte[1],this.sales)){
             return new Sale(parte[1],this.items,this.salesman);
         }
-        this.logger.info("Salee da linha " + lineNumber + " já está cadastrado");
+        this.logger.warn("Vendedor da linha " + lineNumber + " já está cadastrado");
         return null;
     }
 
