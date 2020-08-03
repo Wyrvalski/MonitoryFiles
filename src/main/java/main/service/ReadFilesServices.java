@@ -37,10 +37,17 @@ public class ReadFilesServices {
         List<String> lines = readEachFile(inDirectory,event);
         int lineNumber = 0;
         try {
-            for (String line : lines) {
+            for (int i = 0; i < lines.size(); i++) {
                 lineNumber++;
-                String id = line.substring(0, 3);
-                String[] parte = line.split("ç");
+                String id = lines.get(i).substring(0, 3);
+                String[] parte =  lines.get(i).split("ç");
+
+                while (parte.length < 4) {
+                    String line = lines.get(i).replace("\n","") + lines.get(i+1);
+                    parte = line.split("ç");
+                    i++;
+                    lineNumber++;
+                }
                 switch (id) {
                     case "001" :
                         this.allDataInFile.add(salesmanService.createSalesman(parte,this.allDataInFile, lineNumber));
@@ -52,7 +59,7 @@ public class ReadFilesServices {
                         this.allDataInFile.add(saleService.createSale(parte,this.allDataInFile,lineNumber));
                         break;
                     default:
-                        this.logger.warn("a linha " + line + " não inicia com nenhum id valido");
+                        this.logger.warn("a linha " + lines.get(i) + " não inicia com nenhum id valido");
                         break;
                 }
             };

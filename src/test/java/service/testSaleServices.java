@@ -89,15 +89,15 @@ public class testSaleServices {
         SaleService saleService = new SaleService();
         List<Object> allDataInFile = readFilesServices.mountObjects(inDirectory,file.toString());
         this.sales = saleService.getAllSale(allDataInFile);
-        Assert.assertTrue(saleService.salesExists("12", this.sales));
+        Assert.assertTrue(saleService.salesExists("18", this.sales));
         Assert.assertFalse(saleService.salesExists("11", this.sales));
     }
 
     @Test
     public void testCreateNewSale() {
         SaleService saleService = new SaleService();
-        List<Object> allDataInFile = new ArrayList<>();
-        String line = "003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çPedro";
+        List<Object> allDataInFile = readFilesServices.mountObjects(inDirectory,file.toString());
+        String line = "003ç11ç[1-10-100,2-30-2.50,3-40-3.10]çPedro";
         String[] parte = line.split("ç");
         int lineNumber = 0;
         Sale sale = saleService.createSale(parte,allDataInFile,lineNumber);
@@ -109,7 +109,7 @@ public class testSaleServices {
         SaleService saleService = new SaleService();
         List<Object> allDataInFile = readFilesServices.mountObjects(inDirectory,file.toString());
         Sale sale = saleService.getBiggerSale(allDataInFile);
-        Assert.assertEquals("12",sale.getId());
+        Assert.assertEquals("18",sale.getId());
     }
 
     @Test
@@ -117,7 +117,7 @@ public class testSaleServices {
         SaleService saleService = new SaleService();
         List<Object> allDataInFile = readFilesServices.mountObjects(inDirectory,file.toString());
         List<SalesmanForSales> salesmanForSales = saleService.getAllSalesForSalesman(allDataInFile);
-        Assert.assertEquals( salesmanForSales.get(0).getTotal(),new BigDecimal("185.60"));
+        Assert.assertEquals( salesmanForSales.get(0).getTotal(),new BigDecimal("2799.00"));
     }
 
     @Test

@@ -50,6 +50,6 @@ public class testSale {
     @Test
     public void testSaleGetTotalSale() {
         Sale sale = new Sale(id,items,salesman);
-        Assert.assertEquals(sale.getTotalSale(),new BigDecimal("105.60"));
+        Assert.assertEquals(sale.getTotalSale(),new BigDecimal("1199.00"));
     }
 }

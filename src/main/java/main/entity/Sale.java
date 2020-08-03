@@ -40,7 +40,7 @@ public class Sale {
     public BigDecimal setTotalSale(List<Item> items) {
         BigDecimal total = new BigDecimal("0.00");
         for (int i = 0; i < items.size(); i++){
-            total = total.add(items.get(i).getPrice());
+            total = total.add(items.get(i).getPrice().multiply(new BigDecimal(items.get(i).getQuantity())));
         }
         return this.totalSale = total;
     }

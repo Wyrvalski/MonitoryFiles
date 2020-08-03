@@ -42,10 +42,14 @@ public class SaleService {
         this.salesmen = salesmanService.getAllSalesman(allDataInFile);
         this.salesman = salesmanService.getSalesmanByName(parte[3], this.salesmen);
         this.items = mountItensInSale(parte[2]);
+        if (this.salesman == null){
+            logger.warn("Vendedor da venda da linha " + lineNumber + " não está cadastrado, venda não registrada!");
+            return null;
+        }
         if ( !salesExists(parte[1],this.sales)){
             return new Sale(parte[1],this.items,this.salesman);
         }
-        this.logger.warn("Vendedor da linha " + lineNumber + " já está cadastrado");
+        this.logger.warn("Id da venda da linha " + lineNumber + " já está cadastrada, utilizar um novo id disponivel");
         return null;
     }
 

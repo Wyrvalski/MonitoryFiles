@@ -17,10 +17,10 @@ public class SalesmanService {
     public Salesman getSalesmanByName(String parte, List<Salesman> salesmen) {
         for (int i = 0; i < salesmen.size(); i++) {
             if (salesmen.get(i).getName().equals(parte)) {
-                this.salesman = salesmen.get(i);
+                return salesmen.get(i);
             }
         }
-        return this.salesman;
+        return null;
     }
 
     public Boolean salesmanExists(String cpf, List<Salesman> salesmen) {
