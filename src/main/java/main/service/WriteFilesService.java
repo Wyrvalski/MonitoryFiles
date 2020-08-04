@@ -59,7 +59,7 @@ public class WriteFilesService {
         List<Client> clients = clientService.getAllClient(allDataInFile);
         Salesman salesman = saleService.getWorstSalesman();
         String id = saleService.getBiggerSale(allDataInFile).getId();
-        return String.format("%oç%oç%sç%s",clients.size(),salesmen.size(),id,salesman.getName());
+        return String.format("%dç%dç%sç%s",clients.size(),salesmen.size(),id,salesman.getName());
     }
     public String mountOutPutFileDetails(List<Object> allDataInFile) {
         List<Salesman> salesmen = salesmanService.getAllSalesman(allDataInFile);
