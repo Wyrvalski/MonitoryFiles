@@ -18,7 +18,7 @@ public class MonitoryFiles {
         ReadFilesServices readFilesServices = new ReadFilesServices();
         Path inDirectory = createPath("in");
         Path outDirectory = createPath("out");
-        List<Object> textFile;
+        List<Object> textFile = new ArrayList<>();
         logger.debug("Monitor da pasta data/in está rodando...");
         while (true) {
             try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
@@ -32,12 +32,15 @@ public class MonitoryFiles {
                 for (WatchEvent<?> event : key.pollEvents()) {
                     if (event.context().toString().endsWith(".dat")) {
                         textFile = readFilesServices.mountObjects(inDirectory,event.context().toString());
-                        WriteFilesService writeFilesService = new WriteFilesService(textFile);
-                        writeFilesService.writeOnFile(outDirectory,event);
+
                     } else {
                         logger.warn("O arquivo " + event.context().toString() + " não termina com a extensão .dat");
                     }
+
                 }
+                WriteFilesService writeFilesService = new WriteFilesService(textFile);
+                writeFilesService.writeOnFile(outDirectory);
+                textFile.clear();
                 logger.debug("Relatorio gerado com sucesso no arquivo Realátorio.done.dat");
                 key.reset();
             } catch (IOException | InterruptedException ex) {

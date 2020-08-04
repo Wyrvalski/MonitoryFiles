@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -31,10 +32,10 @@ public class WriteFilesService {
     }
 
 
-    public void writeOnFile (Path outDirectory, WatchEvent<?> event) {
+    public void writeOnFile (Path outDirectory) {
 
-        String filename ="-Relatiorio.done.dat";
-        String filename2 = "RelatórioDetalhado.done.dat";
+        String filename =LocalDate.now()+"_" + LocalDateTime.now().getHour()+":"+ LocalDateTime.now().getMinute() + ":" +LocalDateTime.now().getSecond() +"_Relatorio.done.dat";
+        String filename2 = LocalDate.now()+"_" + LocalDateTime.now().getHour()+":"+ LocalDateTime.now().getMinute() + ":" +LocalDateTime.now().getSecond() +"_RelatórioDetalhado.done.dat";
         Charset charset = UTF_8;
         if (System.getProperty("os.name").contains("Windows")){
             charset = ISO_8859_1;
