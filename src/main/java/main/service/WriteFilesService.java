@@ -67,9 +67,8 @@ public class WriteFilesService {
         Salesman salesman = saleService.getWorstSalesman();
         String id = saleService.getBiggerSale(allDataInFile).getId();
         String salesmanBiggerSale = saleService.getBiggerSale(allDataInFile).getSalesman().getName();
-
-        return String.format("Quantidade de clientes cadastrados = %o \n\n" +
-                "Quantiade de vendedores cadastrados = %o \n\n" +
+        return String.format("Quantidade de clientes cadastrados = %d \n\n" +
+                "Quantiade de vendedores cadastrados = %d \n\n" +
                 "Id da maior venda = %s \n\n" +
                 "Vendedor da maior venda = %s \n\n" +
                 "Pior vendedor = %s",clients.size(),salesmen.size(),id,salesmanBiggerSale,salesman.getName());

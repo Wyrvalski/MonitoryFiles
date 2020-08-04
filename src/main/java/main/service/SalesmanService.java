@@ -12,7 +12,6 @@ public class SalesmanService {
 
     public Logger logger = LoggerFactory.getLogger(SalesmanService.class);
     public List<Salesman> salesmen = new ArrayList<>();
-    public Salesman salesman = new Salesman();
 
     public Salesman getSalesmanByName(String parte, List<Salesman> salesmen) {
         for (int i = 0; i < salesmen.size(); i++) {
@@ -23,9 +22,9 @@ public class SalesmanService {
         return null;
     }
 
-    public Boolean salesmanExists(String cpf, List<Salesman> salesmen) {
+    public Boolean salesmanExists(String cpf,String name, List<Salesman> salesmen) {
         for (int i = 0; i < salesmen.size(); i++) {
-            if (salesmen.get(i).getCpf().equals(cpf)) {
+            if (salesmen.get(i).getCpf().equals(cpf) || salesmen.get(i).getName().equals(name)) {
                 return true;
             }
         }
@@ -34,10 +33,10 @@ public class SalesmanService {
 
     public Salesman createSalesman(String[] parte, List<Object> allDataInFile, int lineNumber) {
         this.salesmen = getAllSalesman(allDataInFile);
-        if ( !salesmanExists(parte[1],salesmen)){
+        if ( !salesmanExists(parte[1],parte[2],salesmen) ){
             return new Salesman(parte[2],parte[1],new BigDecimal(parte[3]));
         }
-        this.logger.warn("Vendedor da linha " + lineNumber +" já está cadastrado");
+        this.logger.warn("Vendedor da linha " + lineNumber +" já está cadastrado com esse nome ou cpf");
         return null;
     }
 
