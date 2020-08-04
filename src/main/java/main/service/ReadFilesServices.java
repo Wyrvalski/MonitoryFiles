@@ -41,9 +41,9 @@ public class ReadFilesServices {
                 lineNumber++;
                 String id = lines.get(i).substring(0, 3);
                 String[] parte =  lines.get(i).split("ç");
-
+                String line = lines.get(i).replace("\n","");
                 while (parte.length < 4) {
-                    String line = lines.get(i).replace("\n","") + lines.get(i+1);
+                    line = line  + lines.get(i+1);
                     parte = line.split("ç");
                     i++;
                     lineNumber++;
